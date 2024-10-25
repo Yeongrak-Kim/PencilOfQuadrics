@@ -13,9 +13,7 @@ peek loadedFiles
 
      newPackage(
              "PencilsOfQuadrics",
---             Version => "0.9", 
     	     Version => "1.0",
---             Date => "June 17, 2020",
     	     Date => "October 10, 2024",
              Authors => {{Name => "Frank-Olaf Schreyer", 
                        Email => "schreyer@math.uni-sb.de", 
@@ -24,7 +22,6 @@ peek loadedFiles
                        Email => "de@msri.org", 
                        HomePage => "www.msri.org/~de"},
 		       {Name => "Yeongrak Kim",
---			   Email => "kim@math.uni-sb.de",
     	    	    	   Email => "yeongrak.kim@pusan.ac.kr",
 			   HomePage => "sites.google.com/view/yeongrak"}
 		   },
@@ -132,7 +129,7 @@ LabBookProtocol(ZZ) := (g) -> (
 	    Ulrich := M1Ul^{r*2^g..(2*r)*2^g-1};
 	    Ulr=coker map(S^(r*2^g),,Ulrich);
 	    minimalBetti Ulr
-	    -- will give an Ulrich bundle, with betti table  
+	    -- will give an Ulrich bundle, with betti table 
 	    -- 16 32 16")
    else 
     if g==4 then ( print "
@@ -146,27 +143,28 @@ LabBookProtocol(ZZ) := (g) -> (
     f = M.hyperellipticBranchEquation;
     assert(dim ideal jacobian ideal f ==0);
     elapsedTime while (        
-    	m1=randomLineBundle(g+(g%2),f);
-	m2=randomLineBundle(g%2,f);
+        m1=randomLineBundle(g+(g%2),f);
+        m2=randomLineBundle(g%2,f);
         m12=randomExtension(m1.yAction,m2.yAction);
-	V = vectorBundleOnE m12;
-	Ul=tensorProduct(Mor,V);
-	Ul1=tensorProduct(Mor1,V);
-	d0=unique degrees target Ul.yAction;
-	d1=unique degrees target Ul1.yAction;
-	#d1 >=3 or #d0 >=3) do ();
+        V = vectorBundleOnE m12;
+        Ul=tensorProduct(Mor,V);
+        Ul1=tensorProduct(Mor1,V);
+        d0=unique degrees target Ul.yAction;
+        d1=unique degrees target Ul1.yAction;
+        #d1 >=3 or #d0 >=3) do ();
     -- 2.27561 seconds elapsed
     betti Ul.yAction, betti Ul1.yAction
     --further commands
-     Ul = tensorProduct(M,V); -- the heaviest part computing the actions of generators
-     -- add timings
+    elapsedTime Ul = tensorProduct(M,V); -- the heaviest part computing the actions of generators
+     -- 419.895 seconds elapsed
      M1Ul:=sum(#Ul.oddOperators,i->S_i*sub(Ul.oddOperators_i,S));
      r=2
      Ulrich := M1Ul^{r*2^g..(2*r)*2^g-1};
-     Ulr=coker map(S^(r*2^g),,Ulrich)
+     Ulr=coker map(S^(r*2^g),,Ulrich);
      minimalBetti Ulr
-     -- will give an Ulrich bundle, with betti table  
-     -- 32 64 32") else
+     -- will give an Ulrich bundle, with betti table 
+     -- 32 64 32
+    ") else
     if g==5 then ( print "
     g=5
     kk= ZZ/101;
@@ -191,6 +189,7 @@ LabBookProtocol(ZZ) := (g) -> (
     betti Ul.yAction, betti Ul1.yAction
     -- -- the further commands
     -- Ul = tensorProduct(M,V); -- the heaviest part computing the actions of generators
+    -- add timing
     -- M1Ul:=sum(#Ul.oddOperators,i->S_i*sub(Ul.oddOperators_i,S));
     -- r=2
     -- Ulrich := M1Ul^{r*2^g..(2*r)*2^g-1};
@@ -249,7 +248,7 @@ LabBookProtocol(ZZ,ZZ) := (g,r) -> (
     r=4
     kk= ZZ/101;
     elapsedTime (S,qq,R,u, M1,M2, Mu1, Mu2)=randomNicePencil(kk,g);
-    -- 9.29588 seconds elapsed
+    -- 0.623928 seconds elapsed
      P=kk[drop(gens S,-2)]
     gens P
     M=cliffordModule(Mu1,Mu2,R)
@@ -292,6 +291,7 @@ LabBookProtocol(ZZ,ZZ) := (g,r) -> (
     elapsedTime (S,qq,R,u, M1,M2, Mu1, Mu2)=randomNicePencil(kk,g);
     -- 9.41219 seconds elapsed
     elapsedTime M=cliffordModule(Mu1,Mu2,R)
+    P=kk[drop(gens S,-2)];
     Mor = vectorBundleOnE M.evenCenter;
     Mor1= vectorBundleOnE M.oddCenter;
     f = M.hyperellipticBranchEquation;
@@ -313,16 +313,16 @@ LabBookProtocol(ZZ,ZZ) := (g,r) -> (
     -- 7.34427 seconds elapsed 
     betti Ul.yAction,betti Ul1.yAction
     --further commands
-    elapsedTime Ul = tensorProduct(M,V); -- the heaviest part computing the actions of generators
-    -- add timing
-    M1Ul=sum(#Ul.oddOperators,i->S_i*sub(Ul.oddOperators_i,S));
-    Ulrich = coker map(P^(r*2^g),,sub(M1Ul^{r*2^g..(2*r)*2^g-1},P));
-    minimalBetti Ulrich
+    -- elapsedTime Ul = tensorProduct(M,V); -- the heaviest part computing the actions of generators
+    -- 1814.76 seconds elapsed
+    -- M1Ul=sum(#Ul.oddOperators,i->S_i*sub(Ul.oddOperators_i,S));
+    -- Ulrich = coker map(P^(r*2^g),,sub(M1Ul^{r*2^g..(2*r)*2^g-1},P));
+    -- minimalBetti Ulrich
     -- Is an Ulrich bundle, with betti numbers
     -- r*2^g,(2*r)*2^g,r*2^g 
-    elapsedTime qs=ann Ulrich
-     -- 25.3661 seconds elapsed
-    ideal sub(diff((vars S)_{2*g+2,2*g+3},qq),P)==qs   
+    -- elapsedTime qs=ann Ulrich
+    -- 522.132 seconds elapsed
+    -- ideal sub(diff((vars S)_{2*g+2,2*g+3},qq),P)==qs   
     ")
     else (print "no record")
     )
@@ -331,10 +331,82 @@ LabBookProtocol(ZZ,ZZ) := (g,r) -> (
 LabBookProtocol 3
 LabBookProtocol 4
 LabBookProtocol 5
+    g=5
+    kk= ZZ/101;
+    elapsedTime (S,qq,R,u, M1,M2, Mu1, Mu2)=randomNicePencil(kk,g);
+     -- 56.2955 seconds elapsed
+    elapsedTime M=cliffordModule(Mu1,Mu2,R)
+     -- 12.8458 seconds elapsed
+    Mor = vectorBundleOnE M.evenCenter;
+    Mor1= vectorBundleOnE M.oddCenter;
+    f = M.hyperellipticBranchEquation;
+    assert(dim ideal jacobian ideal f ==0);
+    elapsedTime while (        
+        m1=randomLineBundle(g+(g%2),f);
+        m2=randomLineBundle(g%2,f);
+        m12=randomExtension(m1.yAction,m2.yAction);
+        V = vectorBundleOnE m12;
+        Ul=tensorProduct(Mor,V);
+        Ul1=tensorProduct(Mor1,V);
+        d0=unique degrees target Ul.yAction;
+        d1=unique degrees target Ul1.yAction;
+        #d1 >=3 or #d0 >=3) do ();
+     -- 29.9208 seconds elapsed
+    betti Ul.yAction, betti Ul1.yAction
+    -- -- the further commands
+    -- elapsedTime Ul = tensorProduct(M,V); -- the heaviest part computing the actions of generators
+    -- 
+    -- M1Ul:=sum(#Ul.oddOperators,i->S_i*sub(Ul.oddOperators_i,S));
+    -- r=2
+    -- Ulrich := M1Ul^{r*2^g..(2*r)*2^g-1};
+    -- Ulr=coker map(S^(r*2^g),,Ulrich)
+    -- minimalBetti Ulr
+    -- -- will give an Ulrich bundle, with betti table 
+    -- 64 128 64
+
 LabBookProtocol 6
 LabBookProtocol(2,3)
 LabBookProtocol(3,4)
-LabBookProtocol(2,4)
+        
+LabBookProtocol(4,3)
+    g=4;
+    r=3;
+    kk= ZZ/101;
+    elapsedTime (S,qq,R,u, M1,M2, Mu1, Mu2)=randomNicePencil(kk,g);
+    -- 9.41219 seconds elapsed
+    elapsedTime M=cliffordModule(Mu1,Mu2,R)
+    Mor = vectorBundleOnE M.evenCenter;
+    Mor1= vectorBundleOnE M.oddCenter;
+    f = M.hyperellipticBranchEquation;
+    assert(dim ideal jacobian ideal f ==0);
+    degSeq={0,2,4}
+    elapsedTime while (
+        -- build a vector bundle V as extensions of line bundles of degrees in degSeq
+        V=randomLineBundle(degSeq#0,f);
+        for i from 1 to r-1 do(
+            m1=randomLineBundle(degSeq#i,f); 
+            m12=randomExtension(m1.yAction,V.yAction);
+            V=vectorBundleOnE m12;
+            ); 
+        Ul=tensorProduct(Mor,V);
+        Ul1=tensorProduct(Mor1,V);
+        d0=unique degrees target Ul.yAction;
+        d1=unique degrees target Ul1.yAction;
+        #d1 >=3 or #d0 >=3) do ();
+    -- 7.34427 seconds elapsed 
+    betti Ul.yAction,betti Ul1.yAction
+    --further commands
+    --elapsedTime Ul = tensorProduct(M,V); -- the heaviest part computing the actions of generators
+    -- add timing
+    --M1Ul=sum(#Ul.oddOperators,i->S_i*sub(Ul.oddOperators_i,S));
+    --Ulrich = coker map(P^(r*2^g),,sub(M1Ul^{r*2^g..(2*r)*2^g-1},P));
+    --minimalBetti Ulrich
+    -- Is an Ulrich bundle, with betti numbers
+    -- r*2^g,(2*r)*2^g,r*2^g 
+    --elapsedTime qs=ann Ulrich
+    --
+    --ideal sub(diff((vars S)_{2*g+2,2*g+3},qq),P)==qs   
+    
 ///
 
 
@@ -1310,16 +1382,17 @@ minimalBetti rUlrich
 time ann rUlrich == ideal( sub(qq,{S_(2*g+2)=>1,S_(2*g+3)=>0}), sub(qq,{S_(2*g+2)=>0,S_(2*g+3)=>1}))
 
 
-g=6
+g=6;
+r=3; -- looking for Ulrich of rank r*2^(g-1)
 time (S, qq,  R,  u, M1, M2, Mu1, Mu2)=randomNicePencil(kk,g); -- when g>4 it becomes heavy!
-M=cliffordModule(Mu1,Mu2,R)
+-- used 461.086 seconds
+time M=cliffordModule(Mu1,Mu2,R)
+-- used 101.41 seconds
 
 Mor = vectorBundleOnE M.evenCenter;
 Mor1= vectorBundleOnE M.oddCenter;
 f = M.hyperellipticBranchEquation;
 d=g%2;
-
-r=3 -- looking for Ulrich of rank r*2^(g-1) 
 
     -- build up a nondecreasing sequence begin with d, end with d+g, and their sum is an expected degree, and is balanced as possible as it can
     targetSum = (r*g)//2 + d*r;
@@ -1336,7 +1409,7 @@ r=3 -- looking for Ulrich of rank r*2^(g-1)
 
     degSeq=toList mutSeq
     
-    time tally apply(1, j->(  -- number of trials
+    time tally apply(1, j->(  -- number of trials=1
     V=randomLineBundle(degSeq#0,f);
     for i from 1 to r-1 do(
 	m1=randomLineBundle(degSeq#i,f); 
@@ -3444,12 +3517,12 @@ doc ///
     Inputs
     	M : CliffordModule
 	S : Ring
-	    a polynomial ring in x_0..y_{(g-1)},z_1,z_2,s,t
+	    a polynomial ring in x_0..y_(g-1),z_1,z_2,s,t
 	r : ZZ
 	    an integer greater than 1, either g or r is even
     Outputs
     	Ulr : Module
-    	    a module on S supported on x_0..y_{(g-1)},z_1,z_2
+    	    a module on S supported on x_0..y_(g-1),z_1,z_2
     Description
     	Text
 	    M is assumed to be a Clifford module with a Morita bundle F_u, i.e., associated to a 
@@ -3557,7 +3630,6 @@ doc ///
 	    -- will give an Ulrich bundle, with betti table 
 	    -- 16 32 16
 
-	    LabBookProtocol 4
 	    (g,r)=(3,4)
 	    LabBookProtocol(g,r)
     SeeAlso
